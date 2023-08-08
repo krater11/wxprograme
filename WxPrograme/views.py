@@ -29,9 +29,14 @@ class MessageView(APIView):
         return Response({'status': True, 'message': '发送成功'})
 
 
-class LoginView(APIView):
+class LoginView1(APIView):
+
+    def get(self,request,*args,**kwargs):
+        print(request.data)
+        return Response({'status':True})
 
     def post(self, request, *args, **kwargs):
+        print("ok")
         print(request.data)
         ser = LoginSerializer(data=request.data)
         if not ser.is_valid():
@@ -42,9 +47,6 @@ class LoginView(APIView):
         user_object, flag = models.UserInfo.objects.get_or_create(phone=phone)
         user_object.token = str(uuid.uuid4())
         user_object.save()
+        print("OK")
 
         return Response({'status': True, 'data': {'token': user_object.token, 'phone': phone}})
-
-    def login(self, request, *args, **kwargs):
-        print(request.data)
-        return Response({'status': True})
